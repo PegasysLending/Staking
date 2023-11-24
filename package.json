@@ -31,7 +31,7 @@
     "xdai:deployment": "npm run hardhat-xdai -- common-deployment --verify",
     "kovan:deployment": "npm run hardhat-kovan -- common-deployment --verify",
     "main:deployment": "npm run hardhat-main -- common-deployment --verify",
-    "main:deployment2": "npm run hardhat-main -- common-deployment --vault-address 0x5Dda19AC38b19788A7842819d6673034006090E1 --aave-address 0x9C716BA14d87c53041bB7fF95C977d5a382E71F7",
+    "main:deployment:noverify": "npm run hardhat-main -- common-deployment --vault-address 0x5Dda19AC38b19788A7842819d6673034006090E1 --aave-address 0x9C716BA14d87c53041bB7fF95C977d5a382E71F7",
     "prettier:check": "npx prettier -c 'tasks/**/*.ts' 'contracts/**/*.sol' 'helpers/**/*.ts'  'test/**/*.ts'",
     "prettier:write": "prettier --write 'tasks/**/*.ts' 'contracts/**/*.sol' 'helpers/**/*.ts'  'test/**/*.ts'",
     "ci:clean": "rm -rf types/ cache/ artifacts/",

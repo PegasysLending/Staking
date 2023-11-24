@@ -55,7 +55,7 @@ const getCommonNetworkConfig = (networkName: eEthereumNetwork, networkId: number
     hardfork: HARDFORK,
     chainId: 57000,
     accounts: {
-      mnemonic: "wish undo album copper body steak action aunt day merry pond cigar",//"// TODO: ADD mnemonic",
+      mnemonic: MNEMONIC,//"// TODO: ADD mnemonic",
       path: MNEMONIC_PATH,
       initialIndex: 0,
       count: 20,
