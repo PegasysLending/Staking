@@ -72,8 +72,7 @@ task(`deploy-CRP`, `Deploys the Configurabl Righ Pool AAVE/WETH`)
       throw new Error('INVALID_CHAIN_ID');
     }
 
-    const [, , , , signer] = await localBRE.ethers.getSigners();
-    console.log(await signer.getAddress());
+    const [signer] = await localBRE.ethers.getSigners();
     const network = localBRE.network.name as eEthereumNetwork;
 
     console.log(`\n- CRP deployment`);
@@ -138,12 +137,13 @@ task(`deploy-CRP`, `Deploys the Configurabl Righ Pool AAVE/WETH`)
         REWARDS_VAULT,
         EMISSION_MANAGER,
         DISTRIBUTION_DURATION,
-        'Aave stakedToken',
-        'stkToken',
+        'Aave staked Tink Token',
+        'stkTIN',
         '18',
         AAVE_GOVERNANCE_V2,
       ],
       true,
       signer
     );
+    console.log(`${stakedBPS.address}`);
   });

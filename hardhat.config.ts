@@ -2,6 +2,7 @@ import { HardhatUserConfig } from 'hardhat/config';
 import { eEthereumNetwork } from './helpers/types';
 // @ts-ignore
 import { accounts } from './test-wallets';
+require('dotenv').config();
 
 import 'hardhat-typechain';
 import 'solidity-coverage';
