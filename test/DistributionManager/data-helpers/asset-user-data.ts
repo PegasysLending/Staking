@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 import { AaveDistributionManager } from '../../../types/AaveDistributionManager';
-import { StakedAave } from '../../../types/StakedAave';
+import { StakedAgave } from '../../../types/StakedAgave';
 import { AaveIncentivesController } from '../../../types/AaveIncentivesController';
 import { StakedAaveV2 } from '../../../types/StakedAaveV2';
 
@@ -17,7 +17,7 @@ export async function getUserIndex(
   distributionManager:
     | AaveDistributionManager
     | AaveIncentivesController
-    | StakedAave
+    | StakedAgave
     | StakedAaveV2,
   user: string,
   asset: string

@@ -4,7 +4,7 @@ const ChaiBigNumber = require('chai-bignumber');
 
 import { ethers, ContractTransaction, BigNumberish, BigNumber } from 'ethers';
 
-import { StakedAave } from '../../../types/StakedAave';
+import { StakedAgave } from '../../../types/StakedAgave';
 
 import { getRewards } from '../../DistributionManager/data-helpers/base-math';
 import { getUserIndex } from '../../DistributionManager/data-helpers/asset-user-data';

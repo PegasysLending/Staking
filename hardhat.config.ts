@@ -13,7 +13,7 @@ import fs from 'fs';
 
 export const BUIDLEREVM_CHAIN_ID = 31337;
 
-const DEFAULT_BLOCK_GAS_LIMIT = 125000;
+const DEFAULT_BLOCK_GAS_LIMIT = 12500000;
 const DEFAULT_GAS_PRICE = 100 * 1000 * 1000; // 75 gwei
 const HARDFORK = 'istanbul';
 const INFURA_KEY = process.env.INFURA_KEY || '';

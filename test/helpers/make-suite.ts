@@ -6,7 +6,7 @@ import { tEthereumAddress } from '../../helpers/types';
 import chai from 'chai';
 // @ts-ignore
 import bignumberChai from 'chai-bignumber';
-import { StakedAave } from '../../types/StakedAave';
+import { StakedAgave } from '../../types/StakedAgave';
 import {
   getAaveIncentivesController,
   getATokenMock,
@@ -37,7 +37,7 @@ export interface TestEnv {
   users: SignerWithAddress[];
   aaveToken: MintableErc20;
   aaveIncentivesController: AaveIncentivesController;
-  stakedAave: StakedAave;
+  stakedAave: StakedAgave;
   aDaiMock: ATokenMock;
   aWethMock: ATokenMock;
 }
@@ -53,7 +53,7 @@ const testEnv: TestEnv = {
   deployer: {} as SignerWithAddress,
   users: [] as SignerWithAddress[],
   aaveToken: {} as MintableErc20,
-  stakedAave: {} as StakedAave,
+  stakedAave: {} as StakedAgave,
   stakedAaveV2: {} as StakedAaveV2,
   aaveIncentivesController: {} as AaveIncentivesController,
   aDaiMock: {} as ATokenMock,
