@@ -695,13 +695,14 @@ makeSuite('StakedAaveV2. Power Delegations', (testEnv: TestEnv) => {
       throw new Error('INVALID_OWNER_PK');
     }
 
-    const { r, s } = getSignatureFromTypedData(ownerPrivateKey, msgParams);
+    const { v, r, s } = getSignatureFromTypedData(ownerPrivateKey, msgParams);
 
     // Transmit message via delegateByTypeBySig
+    // make v is invalid
     await expect(
       stakedAaveV2
         .connect(user1.signer)
-        .delegateByTypeBySig(user2.address, '0', nonce, expiration, 0, r, s)
+        .delegateByTypeBySig(user2.address, '0', nonce, expiration, 5, r, s)
     ).to.be.revertedWith('INVALID_SIGNATURE');
   });
 
@@ -802,8 +803,9 @@ makeSuite('StakedAaveV2. Power Delegations', (testEnv: TestEnv) => {
     const { v, r, s } = getSignatureFromTypedData(ownerPrivateKey, msgParams);
 
     // Transmit tx via delegateBySig
+    // make v is invalid
     await expect(
-      stakedAaveV2.connect(user2.signer).delegateBySig(user4.address, nonce, expiration, '0', r, s)
+      stakedAaveV2.connect(user2.signer).delegateBySig(user4.address, nonce, expiration, '5', r, s)
     ).to.be.revertedWith('INVALID_SIGNATURE');
   });
 

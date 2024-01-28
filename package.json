@@ -54,7 +54,7 @@
     "dotenv": "^16.3.1",
     "eth-sig-util": "^3.0.0",
     "ethereum-waffle": "^3.2.1",
-    "ethereumjs-util": "^7.0.7",
+    "ethereumjs-util": "^7.1.5",
     "ethers": "^5.0.8",
     "hardhat": "^2.2.1",
     "hardhat-typechain": "^0.3.3",

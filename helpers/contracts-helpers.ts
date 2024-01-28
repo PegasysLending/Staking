@@ -5,6 +5,7 @@ import { eContractid, tEthereumAddress } from './types';
 import { Artifact } from 'hardhat/types';
 import { signTypedData_v4 } from 'eth-sig-util';
 import { fromRpcSig, ECDSASignature } from 'ethereumjs-util';
+import { STAKED_AAVE_NAME } from './constants';
 
 export const registerContractInJsonDb = async (contractId: string, contractInstance: Contract) => {
   const currentNetwork = DRE.network.name;
@@ -152,7 +153,7 @@ export const buildPermitParams = (
   },
   primaryType: 'Permit' as const,
   domain: {
-    name: 'Staked Aave',
+    name: STAKED_AAVE_NAME,
     version: '1',
     chainId: chainId,
     verifyingContract: aaveToken,
@@ -190,7 +191,7 @@ export const buildDelegateByTypeParams = (
   },
   primaryType: 'DelegateByType' as const,
   domain: {
-    name: 'Staked Aave',
+    name: STAKED_AAVE_NAME,
     version: '1',
     chainId: chainId,
     verifyingContract: aaveToken,
@@ -225,7 +226,7 @@ export const buildDelegateParams = (
   },
   primaryType: 'Delegate' as const,
   domain: {
-    name: 'Staked Aave',
+    name: STAKED_AAVE_NAME,
     version: '1',
     chainId: chainId,
     verifyingContract: aaveToken,
