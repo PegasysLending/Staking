@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers';
-import { AaveDistributionManager } from '../../../types/AaveDistributionManager';
-import { StakedAgave } from '../../../types/StakedAgave';
-import { AaveIncentivesController } from '../../../types/AaveIncentivesController';
-import { StakedAaveV2 } from '../../../types/StakedAaveV2';
+import { PegasysDistributionManager } from '../../../types/PegasysDistributionManager';
+import { StakedPegasys } from '../../../types/StakedPegasys';
+import { PegasysIncentivesController } from '../../../types/PegasysIncentivesController';
+import { StakedPegasysV2 } from '../../../types/StakedPegasysV2';
 
 export type UserStakeInput = {
   underlyingAsset: string;
@@ -15,10 +15,10 @@ export type UserPositionUpdate = UserStakeInput & {
 };
 export async function getUserIndex(
   distributionManager:
-    | AaveDistributionManager
-    | AaveIncentivesController
-    | StakedAgave
-    | StakedAaveV2,
+    | PegasysDistributionManager
+    | PegasysIncentivesController
+    | StakedPegasys
+    | StakedPegasysV2,
   user: string,
   asset: string
 ): Promise<BigNumber> {

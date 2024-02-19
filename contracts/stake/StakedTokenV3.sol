@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 import {ERC20} from '@aave/aave-token/contracts/open-zeppelin/ERC20.sol';
 
 import {IERC20} from '../interfaces/IERC20.sol';
-import {IStakedAave} from '../interfaces/IStakedAave.sol';
+import {IStakedPegasys} from '../interfaces/IStakedPegasys.sol';
 import {ITransferHook} from '../interfaces/ITransferHook.sol';
 
 import {DistributionTypes} from '../lib/DistributionTypes.sol';
@@ -13,19 +13,19 @@ import {SafeMath} from '../lib/SafeMath.sol';
 import {SafeERC20} from '../lib/SafeERC20.sol';
 
 import {VersionedInitializable} from '../utils/VersionedInitializable.sol';
-import {AaveDistributionManager} from './AaveDistributionManager.sol';
+import {PegasysDistributionManager} from './PegasysDistributionManager.sol';
 import {GovernancePowerWithSnapshot} from '../lib/GovernancePowerWithSnapshot.sol';
 
 /**
  * @title StakedToken V3
- * @notice Contract to stake Aave token, tokenize the position and get rewards, inheriting from a distribution manager contract
- * @author Aave
+ * @notice Contract to stake Pegasys token, tokenize the position and get rewards, inheriting from a distribution manager contract
+ * @author Pegasys
  **/
 contract StakedTokenV3 is
-  IStakedAave,
+  IStakedPegasys,
   GovernancePowerWithSnapshot,
   VersionedInitializable,
-  AaveDistributionManager
+  PegasysDistributionManager
 {
   using SafeMath for uint256;
   using SafeERC20 for IERC20;
@@ -85,13 +85,13 @@ contract StakedTokenV3 is
     string memory symbol,
     uint8 decimals,
     address governance
-  ) public ERC20(name, symbol) AaveDistributionManager(emissionManager, distributionDuration) {
+  ) public ERC20(name, symbol) PegasysDistributionManager(emissionManager, distributionDuration) {
     STAKED_TOKEN = stakedToken;
     REWARD_TOKEN = rewardToken;
     COOLDOWN_SECONDS = cooldownSeconds;
     UNSTAKE_WINDOW = unstakeWindow;
     REWARDS_VAULT = rewardsVault;
-    _aaveGovernance = ITransferHook(governance);
+    _pegasysGovernance = ITransferHook(governance);
     ERC20._setupDecimals(decimals);
   }
 
@@ -430,10 +430,10 @@ contract StakedTokenV3 is
       DelegationType.PROPOSITION_POWER
     );
 
-    // caching the aave governance address to avoid multiple state loads
-    ITransferHook aaveGovernance = _aaveGovernance;
-    if (aaveGovernance != ITransferHook(0)) {
-      aaveGovernance.onTransfer(from, to, amount);
+    // caching the pegasys governance address to avoid multiple state loads
+    ITransferHook pegasysGovernance = _pegasysGovernance;
+    if (pegasysGovernance != ITransferHook(0)) {
+      pegasysGovernance.onTransfer(from, to, amount);
     }
   }
 

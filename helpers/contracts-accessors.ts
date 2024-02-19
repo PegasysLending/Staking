@@ -1,18 +1,18 @@
 import { deployContract, getContractFactory, getContract } from './contracts-helpers';
 import { eContractid, tEthereumAddress } from './types';
 import { MintableErc20 } from '../types/MintableErc20';
-import { StakedAgave } from '../types/StakedAgave';
-import { StakedAaveV2 } from '../types/StakedAaveV2';
+import { StakedPegasys } from '../types/StakedPegasys';
+import { StakedPegasysV2 } from '../types/StakedPegasysV2';
 import { IcrpFactory } from '../types/IcrpFactory'; // Configurable right pool factory
 import { IConfigurableRightsPool } from '../types/IConfigurableRightsPool';
-import { IControllerAaveEcosystemReserve } from '../types/IControllerAaveEcosystemReserve';
+import { IControllerPegasysEcosystemReserve } from '../types/IControllerPegasysEcosystemReserve';
 import { SelfdestructTransfer } from '../types/SelfdestructTransfer';
 import { IbPool } from '../types/IbPool'; // Balance pool
 import { StakedTokenV2 } from '../types/StakedTokenV2';
 import { StakedTokenV3 } from '../types/StakedTokenV3';
 import { Ierc20Detailed } from '../types/Ierc20Detailed';
 import { InitializableAdminUpgradeabilityProxy } from '../types/InitializableAdminUpgradeabilityProxy';
-import { AaveIncentivesController } from '../types/AaveIncentivesController';
+import { PegasysIncentivesController } from '../types/PegasysIncentivesController';
 import { MockTransferHook } from '../types/MockTransferHook';
 import { verifyContract } from './etherscan-verification';
 import { ATokenMock } from '../types/ATokenMock';
@@ -22,7 +22,7 @@ import { zeroAddress } from 'ethereumjs-util';
 import { ZERO_ADDRESS } from './constants';
 import { Signer } from 'ethers';
 
-export const deployStakedAave = async (
+export const deployStakedPegasys = async (
   [
     stakedToken,
     rewardsToken,
@@ -42,7 +42,7 @@ export const deployStakedAave = async (
   ],
   verify?: boolean
 ) => {
-  const id = eContractid.StakedAgave;
+  const id = eContractid.StakedPegasys;
   const args: string[] = [
     stakedToken,
     rewardsToken,
@@ -52,14 +52,14 @@ export const deployStakedAave = async (
     emissionManager,
     distributionDuration,
   ];
-  const instance = await deployContract<StakedAgave>(id, args);
+  const instance = await deployContract<StakedPegasys>(id, args);
   if (verify) {
     await verifyContract(instance.address, args);
   }
   return instance;
 };
 
-export const deployStakedAaveV2 = async (
+export const deployStakedPegasysV2 = async (
   [
     stakedToken,
     rewardsToken,
@@ -79,7 +79,7 @@ export const deployStakedAaveV2 = async (
   ],
   verify?: boolean
 ) => {
-  const id = eContractid.StakedAaveV2;
+  const id = eContractid.StakedPegasysV2;
   const args: string[] = [
     stakedToken,
     rewardsToken,
@@ -90,7 +90,7 @@ export const deployStakedAaveV2 = async (
     distributionDuration,
     ZERO_ADDRESS, // gov address
   ];
-  const instance = await deployContract<StakedAaveV2>(id, args);
+  const instance = await deployContract<StakedPegasysV2>(id, args);
   if (verify) {
     await verifyContract(instance.address, args);
   }
@@ -197,8 +197,8 @@ export const deployStakedTokenV3 = async (
   return instance;
 };
 
-export const deployAaveIncentivesController = async (
-  [rewardToken, rewardsVault, aavePsm, extraPsmReward, emissionManager, distributionDuration]: [
+export const deployPegasysIncentivesController = async (
+  [rewardToken, rewardsVault, pegasysPsm, extraPsmReward, emissionManager, distributionDuration]: [
     tEthereumAddress,
     tEthereumAddress,
     tEthereumAddress,
@@ -208,16 +208,16 @@ export const deployAaveIncentivesController = async (
   ],
   verify?: boolean
 ) => {
-  const id = eContractid.AaveIncentivesController;
+  const id = eContractid.PegasysIncentivesController;
   const args: string[] = [
     rewardToken,
     rewardsVault,
-    aavePsm,
+    pegasysPsm,
     extraPsmReward,
     emissionManager,
     distributionDuration,
   ];
-  const instance = await deployContract<AaveIncentivesController>(id, args);
+  const instance = await deployContract<PegasysIncentivesController>(id, args);
   await instance.deployTransaction.wait();
   if (verify) {
     await verifyContract(instance.address, args);
@@ -253,9 +253,12 @@ export const deployMockTransferHook = async () =>
 export const deployATokenMock = async (aicAddress: tEthereumAddress, slug: string) =>
   await deployContract<ATokenMock>(eContractid.ATokenMock, [aicAddress], slug);
 
-export const deployDoubleTransferHelper = async (aaveToken: tEthereumAddress, verify?: boolean) => {
+export const deployDoubleTransferHelper = async (
+  pegasysToken: tEthereumAddress,
+  verify?: boolean
+) => {
   const id = eContractid.DoubleTransferHelper;
-  const args = [aaveToken];
+  const args = [pegasysToken];
   const instance = await deployContract<DoubleTransferHelper>(id, args);
   await instance.deployTransaction.wait();
   if (verify) {
@@ -266,21 +269,22 @@ export const deployDoubleTransferHelper = async (aaveToken: tEthereumAddress, ve
 
 export const getMintableErc20 = getContractFactory<MintableErc20>(eContractid.MintableErc20);
 
-export const getStakedAave = getContractFactory<StakedAgave>(eContractid.StakedAgave);
-export const getStakedAaveV2 = getContractFactory<StakedAaveV2>(eContractid.StakedAaveV2);
+export const getStakedPegasys = getContractFactory<StakedPegasys>(eContractid.StakedPegasys);
+export const getStakedPegasysV2 = getContractFactory<StakedPegasysV2>(eContractid.StakedPegasysV2);
 
-export const getStakedAaveProxy = async (address?: tEthereumAddress) => {
+export const getStakedPegasysProxy = async (address?: tEthereumAddress) => {
   return await getContract<InitializableAdminUpgradeabilityProxy>(
     eContractid.InitializableAdminUpgradeabilityProxy,
-    address || (await getDb().get(`${eContractid.StakedAgave}.${DRE.network.name}`).value()).address
+    address ||
+      (await getDb().get(`${eContractid.StakedPegasys}.${DRE.network.name}`).value()).address
   );
 };
 
-export const getStakedAaveImpl = async (address?: tEthereumAddress) => {
-  return await getContract<StakedAgave>(
-    eContractid.StakedAgave,
+export const getStakedPegasysImpl = async (address?: tEthereumAddress) => {
+  return await getContract<StakedPegasys>(
+    eContractid.StakedPegasys,
     address ||
-      (await getDb().get(`${eContractid.StakedAaveImpl}.${DRE.network.name}`).value()).address
+      (await getDb().get(`${eContractid.StakedPegasysImpl}.${DRE.network.name}`).value()).address
   );
 };
 
@@ -299,8 +303,8 @@ export const getStakedTokenV3 = async (address?: tEthereumAddress) => {
   );
 };
 
-export const getAaveIncentivesController = getContractFactory<AaveIncentivesController>(
-  eContractid.AaveIncentivesController
+export const getPegasysIncentivesController = getContractFactory<PegasysIncentivesController>(
+  eContractid.PegasysIncentivesController
 );
 
 export const getIErc20Detailed = getContractFactory<Ierc20Detailed>(eContractid.IERC20Detailed);
@@ -320,8 +324,8 @@ export const getERC20Contract = (address: tEthereumAddress) =>
   getContract<MintableErc20>(eContractid.MintableErc20, address);
 
 export const getController = (address: tEthereumAddress) =>
-  getContract<IControllerAaveEcosystemReserve>(
-    eContractid.IControllerAaveEcosystemReserve,
+  getContract<IControllerPegasysEcosystemReserve>(
+    eContractid.IControllerPegasysEcosystemReserve,
     address
   );
 

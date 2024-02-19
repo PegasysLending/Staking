@@ -12,9 +12,9 @@ export enum eEthereumNetwork {
 
 export enum eContractid {
   DistributionManager = 'DistributionManager',
-  StakedAgave = 'StakedAgave',
-  StakedAaveImpl = 'StakedAaveImpl',
-  AaveIncentivesController = 'AaveIncentivesController',
+  StakedPegasys = 'StakedPegasys',
+  StakedPegasysImpl = 'StakedPegasysImpl',
+  PegasysIncentivesController = 'PegasysIncentivesController',
   IERC20Detailed = 'IERC20Detailed',
   AdminUpgradeabilityProxy = 'AdminUpgradeabilityProxy',
   InitializableAdminUpgradeabilityProxy = 'InitializableAdminUpgradeabilityProxy',
@@ -22,14 +22,14 @@ export enum eContractid {
   LendingPoolMock = 'LendingPoolMock',
   MockTransferHook = 'MockTransferHook',
   ATokenMock = 'ATokenMock',
-  StakedAaveV2 = 'StakedAaveV2',
+  StakedPegasysV2 = 'StakedPegasysV2',
   DoubleTransferHelper = 'DoubleTransferHelper',
   ICRPFactory = 'ICRPFactory',
   StakedTokenV2 = 'StakedTokenV2',
   StakedTokenV3 = 'StakedTokenV3',
   IConfigurableRightsPool = 'IConfigurableRightsPool',
   IBPool = 'IBPool',
-  IControllerAaveEcosystemReserve = 'IControllerAaveEcosystemReserve',
+  IControllerPegasysEcosystemReserve = 'IControllerPegasysEcosystemReserve',
   MockSelfDestruct = 'SelfdestructTransfer',
 }
 

@@ -1,9 +1,9 @@
 import { BigNumber, BigNumberish } from 'ethers';
 import { comparatorEngine, CompareRules } from '../../helpers/comparator-engine';
 import { getNormalizedDistribution } from '../../helpers/ray-math';
-import { AaveDistributionManager } from '../../../types/AaveDistributionManager';
-import { StakedAgave } from '../../../types/StakedAgave';
-import { AaveIncentivesController } from '../../../types/AaveIncentivesController';
+import { PegasysDistributionManager } from '../../../types/PegasysDistributionManager';
+import { StakedPegasys } from '../../../types/StakedPegasys';
+import { PegasysIncentivesController } from '../../../types/PegasysIncentivesController';
 
 export type AssetUpdateData = {
   emissionPerSecond: BigNumberish;
@@ -17,7 +17,7 @@ export type AssetData = {
 };
 
 export async function getAssetsData<T extends { underlyingAsset: string }>(
-  peiContract: AaveDistributionManager | AaveIncentivesController | StakedAgave,
+  peiContract: PegasysDistributionManager | PegasysIncentivesController | StakedPegasys,
   assets: T[]
 ) {
   return await Promise.all(

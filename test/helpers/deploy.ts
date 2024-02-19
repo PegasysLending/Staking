@@ -3,25 +3,25 @@ import {
   PSM_STAKER_PREMIUM,
   COOLDOWN_SECONDS,
   UNSTAKE_WINDOW,
-  STAKED_AAVE_NAME,
-  STAKED_AAVE_SYMBOL,
-  STAKED_AAVE_DECIMALS,
+  STAKED_SYS_NAME,
+  STAKED_SYS_SYMBOL,
+  STAKED_SYS_DECIMALS,
   MAX_UINT_AMOUNT,
 } from '../../helpers/constants';
 import {
   deployInitializableAdminUpgradeabilityProxy,
-  deployAaveIncentivesController,
-  deployStakedAave,
+  deployPegasysIncentivesController,
+  deployStakedPegasys,
   deployMockTransferHook,
-  deployStakedAaveV2,
+  deployStakedPegasysV2,
 } from '../../helpers/contracts-accessors';
 import { insertContractAddressInDb } from '../../helpers/contracts-helpers';
 import { waitForTx } from '../../helpers/misc-utils';
 import { eContractid } from '../../helpers/types';
 import { MintableErc20 } from '../../types/MintableErc20';
 
-export const testDeployAaveStakeV1 = async (
-  aaveToken: MintableErc20,
+export const testDeployPegasysStakeV1 = async (
+  pegasysToken: MintableErc20,
   deployer: Signer,
   vaultOfRewards: Signer,
   restWallets: Signer[]
@@ -29,24 +29,24 @@ export const testDeployAaveStakeV1 = async (
   const proxyAdmin = await restWallets[0].getAddress();
   const emissionManager = await deployer.getAddress();
 
-  const stakedToken = aaveToken.address;
-  const rewardsToken = aaveToken.address;
+  const stakedToken = pegasysToken.address;
+  const rewardsToken = pegasysToken.address;
 
   const vaultOfRewardsAddress = await vaultOfRewards.getAddress();
 
-  const aaveIncentivesControllerProxy = await deployInitializableAdminUpgradeabilityProxy();
-  const stakedAaveProxy = await deployInitializableAdminUpgradeabilityProxy();
+  const pegasysIncentivesControllerProxy = await deployInitializableAdminUpgradeabilityProxy();
+  const stakedPegasysProxy = await deployInitializableAdminUpgradeabilityProxy();
 
-  const aaveIncentivesControllerImplementation = await deployAaveIncentivesController([
-    aaveToken.address,
+  const pegasysIncentivesControllerImplementation = await deployPegasysIncentivesController([
+    pegasysToken.address,
     vaultOfRewardsAddress,
-    stakedAaveProxy.address,
+    stakedPegasysProxy.address,
     PSM_STAKER_PREMIUM,
     emissionManager,
     (1000 * 60 * 60).toString(),
   ]);
 
-  const stakedAaveImpl = await deployStakedAave([
+  const stakedPegasysImpl = await deployStakedPegasys([
     stakedToken,
     rewardsToken,
     COOLDOWN_SECONDS,
@@ -58,65 +58,63 @@ export const testDeployAaveStakeV1 = async (
 
   const mockTransferHook = await deployMockTransferHook();
 
-  const stakedAaveEncodedInitialize = stakedAaveImpl.interface.encodeFunctionData('initialize', [
-    mockTransferHook.address,
-    STAKED_AAVE_NAME,
-    STAKED_AAVE_SYMBOL,
-    STAKED_AAVE_DECIMALS,
-  ]);
-  await stakedAaveProxy['initialize(address,address,bytes)'](
-    stakedAaveImpl.address,
+  const stakedPegasysEncodedInitialize = stakedPegasysImpl.interface.encodeFunctionData(
+    'initialize',
+    [mockTransferHook.address, STAKED_SYS_NAME, STAKED_SYS_SYMBOL, STAKED_SYS_DECIMALS]
+  );
+  await stakedPegasysProxy['initialize(address,address,bytes)'](
+    stakedPegasysImpl.address,
     proxyAdmin,
-    stakedAaveEncodedInitialize
+    stakedPegasysEncodedInitialize
   );
   await waitForTx(
-    await aaveToken.connect(vaultOfRewards).approve(stakedAaveProxy.address, MAX_UINT_AMOUNT)
+    await pegasysToken.connect(vaultOfRewards).approve(stakedPegasysProxy.address, MAX_UINT_AMOUNT)
   );
-  await insertContractAddressInDb(eContractid.StakedAgave, stakedAaveProxy.address);
+  await insertContractAddressInDb(eContractid.StakedPegasys, stakedPegasysProxy.address);
 
-  const peiEncodedInitialize = aaveIncentivesControllerImplementation.interface.encodeFunctionData(
+  const peiEncodedInitialize = pegasysIncentivesControllerImplementation.interface.encodeFunctionData(
     'initialize'
   );
-  await aaveIncentivesControllerProxy['initialize(address,address,bytes)'](
-    aaveIncentivesControllerImplementation.address,
+  await pegasysIncentivesControllerProxy['initialize(address,address,bytes)'](
+    pegasysIncentivesControllerImplementation.address,
     proxyAdmin,
     peiEncodedInitialize
   );
   await waitForTx(
-    await aaveToken
+    await pegasysToken
       .connect(vaultOfRewards)
-      .approve(aaveIncentivesControllerProxy.address, MAX_UINT_AMOUNT)
+      .approve(pegasysIncentivesControllerProxy.address, MAX_UINT_AMOUNT)
   );
   await insertContractAddressInDb(
-    eContractid.AaveIncentivesController,
-    aaveIncentivesControllerProxy.address
+    eContractid.PegasysIncentivesController,
+    pegasysIncentivesControllerProxy.address
   );
 
   return {
-    aaveIncentivesControllerProxy,
-    stakedAaveProxy,
+    pegasysIncentivesControllerProxy,
+    stakedPegasysProxy,
   };
 };
 
-export const testDeployAaveStakeV2 = async (
-  aaveToken: MintableErc20,
+export const testDeployPegasysStakeV2 = async (
+  pegasysToken: MintableErc20,
   deployer: Signer,
   vaultOfRewards: Signer,
   restWallets: Signer[]
 ) => {
-  const stakedToken = aaveToken.address;
-  const rewardsToken = aaveToken.address;
+  const stakedToken = pegasysToken.address;
+  const rewardsToken = pegasysToken.address;
   const emissionManager = await deployer.getAddress();
   const vaultOfRewardsAddress = await vaultOfRewards.getAddress();
 
-  const { stakedAaveProxy } = await testDeployAaveStakeV1(
-    aaveToken,
+  const { stakedPegasysProxy } = await testDeployPegasysStakeV1(
+    pegasysToken,
     deployer,
     vaultOfRewards,
     restWallets
   );
 
-  const stakedAaveImpl = await deployStakedAaveV2([
+  const stakedPegasysImpl = await deployStakedPegasysV2([
     stakedToken,
     rewardsToken,
     COOLDOWN_SECONDS,
@@ -126,15 +124,17 @@ export const testDeployAaveStakeV2 = async (
     (1000 * 60 * 60).toString(),
   ]);
 
-  const stakedAaveEncodedInitialize = stakedAaveImpl.interface.encodeFunctionData('initialize');
+  const stakedPegasysEncodedInitialize = stakedPegasysImpl.interface.encodeFunctionData(
+    'initialize'
+  );
 
-  await stakedAaveProxy
+  await stakedPegasysProxy
     .connect(restWallets[0])
-    .upgradeToAndCall(stakedAaveImpl.address, stakedAaveEncodedInitialize);
+    .upgradeToAndCall(stakedPegasysImpl.address, stakedPegasysEncodedInitialize);
 
-  await insertContractAddressInDb(eContractid.StakedAaveV2, stakedAaveProxy.address);
+  await insertContractAddressInDb(eContractid.StakedPegasysV2, stakedPegasysProxy.address);
 
   return {
-    stakedAaveProxy,
+    stakedPegasysProxy,
   };
 };

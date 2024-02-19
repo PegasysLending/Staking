@@ -5,7 +5,7 @@ import { eContractid, tEthereumAddress } from './types';
 import { Artifact } from 'hardhat/types';
 import { signTypedData_v4 } from 'eth-sig-util';
 import { fromRpcSig, ECDSASignature } from 'ethereumjs-util';
-import { STAKED_AAVE_NAME } from './constants';
+import { STAKED_SYS_NAME } from './constants';
 
 export const registerContractInJsonDb = async (contractId: string, contractInstance: Contract) => {
   const currentNetwork = DRE.network.name;
@@ -129,7 +129,7 @@ export const getContract = async <ContractType extends Contract>(
 
 export const buildPermitParams = (
   chainId: number,
-  aaveToken: tEthereumAddress,
+  pegasysToken: tEthereumAddress,
   owner: tEthereumAddress,
   spender: tEthereumAddress,
   nonce: number,
@@ -153,10 +153,10 @@ export const buildPermitParams = (
   },
   primaryType: 'Permit' as const,
   domain: {
-    name: STAKED_AAVE_NAME,
+    name: STAKED_SYS_NAME,
     version: '1',
     chainId: chainId,
-    verifyingContract: aaveToken,
+    verifyingContract: pegasysToken,
   },
   message: {
     owner,
@@ -169,7 +169,7 @@ export const buildPermitParams = (
 
 export const buildDelegateByTypeParams = (
   chainId: number,
-  aaveToken: tEthereumAddress,
+  pegasysToken: tEthereumAddress,
   delegatee: tEthereumAddress,
   type: string,
   nonce: string,
@@ -191,10 +191,10 @@ export const buildDelegateByTypeParams = (
   },
   primaryType: 'DelegateByType' as const,
   domain: {
-    name: STAKED_AAVE_NAME,
+    name: STAKED_SYS_NAME,
     version: '1',
     chainId: chainId,
-    verifyingContract: aaveToken,
+    verifyingContract: pegasysToken,
   },
   message: {
     delegatee,
@@ -206,7 +206,7 @@ export const buildDelegateByTypeParams = (
 
 export const buildDelegateParams = (
   chainId: number,
-  aaveToken: tEthereumAddress,
+  pegasysToken: tEthereumAddress,
   delegatee: tEthereumAddress,
   nonce: string,
   expiry: string
@@ -226,10 +226,10 @@ export const buildDelegateParams = (
   },
   primaryType: 'Delegate' as const,
   domain: {
-    name: STAKED_AAVE_NAME,
+    name: STAKED_SYS_NAME,
     version: '1',
     chainId: chainId,
-    verifyingContract: aaveToken,
+    verifyingContract: pegasysToken,
   },
   message: {
     delegatee,

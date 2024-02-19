@@ -3,26 +3,26 @@ pragma solidity 0.7.5;
 pragma experimental ABIEncoderV2;
 
 import {IERC20} from '../interfaces/IERC20.sol';
-import {IStakedAave} from '../interfaces/IStakedAave.sol';
+import {IStakedPegasys} from '../interfaces/IStakedPegasys.sol';
 import {ITransferHook} from '../interfaces/ITransferHook.sol';
 import {ERC20Snapshot} from '../lib/ERC20Snapshot.sol';
-import {ERC20} from "../lib/ERC20.sol";
+import {ERC20} from '../lib/ERC20.sol';
 import {SafeERC20} from '../lib/SafeERC20.sol';
 import {VersionedInitializable} from '../utils/VersionedInitializable.sol';
 import {DistributionTypes} from '../lib/DistributionTypes.sol';
-import {AaveDistributionManager} from './AaveDistributionManager.sol';
+import {PegasysDistributionManager} from './PegasysDistributionManager.sol';
 import {SafeMath} from '../lib/SafeMath.sol';
 
 /**
  * @title StakedToken
- * @notice Contract to stake Aave token, tokenize the position and get rewards, inheriting from a distribution manager contract
- * @author Aave
+ * @notice Contract to stake Pegasys token, tokenize the position and get rewards, inheriting from a distribution manager contract
+ * @author Pegasys
  **/
 contract StakedToken is
-  IStakedAave,
+  IStakedPegasys,
   ERC20Snapshot,
   VersionedInitializable,
-  AaveDistributionManager
+  PegasysDistributionManager
 {
   using SafeMath for uint256;
   using SafeERC20 for IERC20;
@@ -64,7 +64,7 @@ contract StakedToken is
   )
     public
     ERC20(name, symbol, decimals)
-    AaveDistributionManager(emissionManager, distributionDuration)
+    PegasysDistributionManager(emissionManager, distributionDuration)
   {
     STAKED_TOKEN = stakedToken;
     REWARD_TOKEN = rewardToken;
@@ -77,7 +77,7 @@ contract StakedToken is
    * @dev Called by the proxy contract
    **/
   function initialize(
-    ITransferHook aaveGovernance,
+    ITransferHook pegasysGovernance,
     string calldata name,
     string calldata symbol,
     uint8 decimals
