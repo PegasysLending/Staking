@@ -1,7 +1,3 @@
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Build pass](https://github.com/aave/aave-stake-v2/actions/workflows/node.js.yml/badge.svg)](https://github.com/aave/aave-stake-v2/actions/workflows/node.js.yml)
-[![codecov](https://codecov.io/gh/aave/aave-stake-v2/branch/master/graph/badge.svg?token=0rtEtFEtgN)](https://codecov.io/gh/aave/aave-stake-v2)
-
 # Pegasys Incentives contracts
 
 Sets of smart contracts to enable stake of Pegasys-related assets and rewards distribution based on them.
@@ -19,7 +15,7 @@ The following sections will go in detail on the specification of both the `Pegas
 
 ### PegasysDistributionManager
 
-Core contract for calculation of multiple distributions with different configurations. All the front contracts which users/aave protocol will interact with inherit from the `PegasysDistributionManager`.
+Core contract for calculation of multiple distributions with different configurations. All the front contracts which users/pegasys protocol will interact with inherit from the `PegasysDistributionManager`.
 It calculates how many rewards belong to a certain user depending on the user's situation defined by the front contract of the distribution. This calculation is done by using a distribution index representing the accumulation of rewards from an emission per second and snapshoting that index on each user to take into account how much of the total belongs to him.
 
 #### Data
