@@ -97,7 +97,7 @@ export const getPegasysAdminPerNetwork = (network: eEthereumNetwork): tEthereumA
       [eEthereumNetwork.ropsten]: '', // Pegasys Governance
       [eEthereumNetwork.rinkeby]: '0x32b1ca2182eE26F8c5A6CB6Ed285Ef3304a4F5BE', // Rinkeby Pegasys Deployer
       [eEthereumNetwork.xdai]: '0xd811a03EEb2623556bf05bcD7F58874D2d784C26', // Pegasys DAO Agent
-      [eEthereumNetwork.main]: '0x5Dda19AC38b19788A7842819d6673034006090E1', // Pegasys Governance
+      [eEthereumNetwork.main]: '0x39ed63a65AD05e623d641669c336769b51eDEF8C', // Pegasys Governance
     },
     network
   );

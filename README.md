@@ -113,3 +113,46 @@ For the proxy-related contracts, we have used the implementation of our friend f
 ## License
 
 The contents of this repository are under the AGPLv3 license.
+
+## Setup .env
+
+Follow the next steps to setup the repository:
+
+- Create an enviroment file named `.env` and fill the next enviroment variables
+
+```
+# Mnemonic, only first address will be used
+MNEMONIC=""
+
+```
+
+Replace the admin address with your own in the function 'getPegasysAdminPerNetwork' in the file 'helpers/constants.ts'.
+
+
+## Install
+```
+npm install
+```
+* While encountering dependency issues, you can try adding the ```--force``` flag when running 'npm install'.
+
+## Compile
+```
+npm run compile
+```
+
+## Prepare the token and treasury address
+
+- Vault Address
+ex. 0x39ed63a65AD05e623d641669c336769b51eDEF8C
+- Pegasys Address The address of Token owned by Pegasys
+ex. 0x5019FBb4a3fAab9e68239Dd258ab63389104E314
+
+## Deploy
+```
+npx hardhat --network main common-deployment --vault-address 0x39ed63a65AD05e623d641669c336769b51eDEF8C --pegasys-address 0x5019FBb4a3fAab9e68239Dd258ab63389104E314
+```
+
+## Setup the FE
+Retrieve the abi files in path artifacts/contracts.
+Retrieve the addresses located in the file 'deployed-contracts.json'.
+
