@@ -18,8 +18,9 @@ const DEFAULT_GAS_PRICE = 100 * 1000 * 1000; // 75 gwei
 const HARDFORK = 'istanbul';
 const INFURA_KEY = process.env.INFURA_KEY || '';
 const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY || '';
-const MNEMONIC_PATH = "m/44'/60'/0'/0";
+const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
 const MNEMONIC = process.env.MNEMONIC || '';
+const MNEMONIC_PATH = "m/44'/60'/0'/0";
 const ALCHEMY_KEY = process.env.ALCHEMY_KEY || '';
 const SKIP_LOAD = process.env.SKIP_LOAD === 'true';
 const MAINNET_FORK = process.env.MAINNET_FORK === 'true';
@@ -47,22 +48,6 @@ const mainnetFork = MAINNET_FORK
         : `https://rpc-tanenbaum.rollux.com`,
     }
   : undefined;
-
-const getCommonNetworkConfig = (networkName: eEthereumNetwork, networkId: number) => {
-  return {
-    url: ALCHEMY_KEY
-      ? `https://rpc-tanenbaum.rollux.com`
-      : `https://rpc-tanenbaum.rollux.com`,
-    hardfork: HARDFORK,
-    chainId: 57000,
-    accounts: {
-      mnemonic: MNEMONIC,//"// TODO: ADD mnemonic",
-      path: MNEMONIC_PATH,
-      initialIndex: 0,
-      count: 20,
-    },
-  };
-};
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -94,23 +79,16 @@ const config: HardhatUserConfig = {
     timeout: 0,
   },
   networks: {
-    kovan: getCommonNetworkConfig(eEthereumNetwork.kovan, 42),
-    rinkeby: { 
-      ...getCommonNetworkConfig(eEthereumNetwork.rinkeby, 4),
-      gasPrice: 1000000000,
-      blockGasLimit: 10000000,
-      url: 'http://rinkeby:8558/'
-    },
-    ropsten: getCommonNetworkConfig(eEthereumNetwork.ropsten, 3),
-    xdai: { 
-      ...getCommonNetworkConfig(eEthereumNetwork.xdai, 100),
-      gasPrice: 1000000000,
-      url: 'http://xdai:8545/'
-    },
     main: {
-      ...getCommonNetworkConfig(eEthereumNetwork.main, 57000),
-      gasPrice: 1000000000,
-      url: 'https://rpc-tanenbaum.rollux.com'
+      url: 'https://rpc-tanenbaum.rollux.com',
+      hardfork: HARDFORK,
+      chainId: 57000,
+      accounts: MNEMONIC ? {
+        mnemonic: MNEMONIC,
+        path: MNEMONIC_PATH,
+        initialIndex: 0,
+        count: 20,
+      } : [PRIVATE_KEY],
     },
     hardhat: {
       hardfork: 'istanbul',
@@ -125,18 +103,6 @@ const config: HardhatUserConfig = {
         balance,
       })),
       forking: mainnetFork,
-    },
-    ganache: {
-      url: 'http://ganache:8545',
-      accounts: {
-        mnemonic: 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm',
-        path: "m/44'/60'/0'/0",
-        initialIndex: 0,
-        count: 20,
-      },
-    },
-    coverage: {
-      url: 'http://localhost:8555',
     },
   },
 };
