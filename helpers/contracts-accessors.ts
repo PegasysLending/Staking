@@ -3,14 +3,14 @@ import { eContractid, tEthereumAddress } from './types';
 import { MintableErc20 } from '../types/MintableErc20';
 import { StakedPegasys } from '../types/StakedPegasys';
 import { StakedPegasysV2 } from '../types/StakedPegasysV2';
-import { IcrpFactory } from '../types/IcrpFactory'; // Configurable right pool factory
+import { ICRPFactory } from '../types/IcrpFactory'; // Configurable right pool factory
 import { IConfigurableRightsPool } from '../types/IConfigurableRightsPool';
 import { IControllerPegasysEcosystemReserve } from '../types/IControllerPegasysEcosystemReserve';
 import { SelfdestructTransfer } from '../types/SelfdestructTransfer';
-import { IbPool } from '../types/IbPool'; // Balance pool
+import { IBPool } from '../types/IbPool'; // Balance pool
 import { StakedTokenV2 } from '../types/StakedTokenV2';
 import { StakedTokenV3 } from '../types/StakedTokenV3';
-import { Ierc20Detailed } from '../types/Ierc20Detailed';
+import { IERC20Detailed } from '../types/Ierc20Detailed';
 import { InitializableAdminUpgradeabilityProxy } from '../types/InitializableAdminUpgradeabilityProxy';
 import { PegasysIncentivesController } from '../types/PegasysIncentivesController';
 import { MockTransferHook } from '../types/MockTransferHook';
@@ -307,18 +307,18 @@ export const getPegasysIncentivesController = getContractFactory<PegasysIncentiv
   eContractid.PegasysIncentivesController
 );
 
-export const getIErc20Detailed = getContractFactory<Ierc20Detailed>(eContractid.IERC20Detailed);
+export const getIErc20Detailed = getContractFactory<IERC20Detailed>(eContractid.IERC20Detailed);
 
 export const getATokenMock = getContractFactory<ATokenMock>(eContractid.ATokenMock);
 
 export const getCRPFactoryContract = (address: tEthereumAddress) =>
-  getContract<IcrpFactory>(eContractid.ICRPFactory, address);
+  getContract<ICRPFactory>(eContractid.ICRPFactory, address);
 
 export const getCRPContract = (address: tEthereumAddress) =>
   getContract<IConfigurableRightsPool>(eContractid.IConfigurableRightsPool, address);
 
 export const getBpool = (address: tEthereumAddress) =>
-  getContract<IbPool>(eContractid.IBPool, address);
+  getContract<IBPool>(eContractid.IBPool, address);
 
 export const getERC20Contract = (address: tEthereumAddress) =>
   getContract<MintableErc20>(eContractid.MintableErc20, address);
