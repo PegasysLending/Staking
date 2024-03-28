@@ -7,7 +7,7 @@ require('dotenv').config();
 import 'hardhat-typechain';
 import 'solidity-coverage';
 import '@nomiclabs/hardhat-waffle';
-import '@nomiclabs/hardhat-etherscan';
+import '@nomicfoundation/hardhat-verify';
 import path from 'path';
 import fs from 'fs';
 
@@ -15,12 +15,7 @@ export const BUIDLEREVM_CHAIN_ID = 31337;
 
 const DEFAULT_BLOCK_GAS_LIMIT = 12500000;
 const DEFAULT_GAS_PRICE = 100 * 1000 * 1000; // 75 gwei
-const HARDFORK = 'istanbul';
-const INFURA_KEY = process.env.INFURA_KEY || '';
-const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY || '';
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
-const MNEMONIC = process.env.MNEMONIC || '';
-const MNEMONIC_PATH = "m/44'/60'/0'/0";
 const ALCHEMY_KEY = process.env.ALCHEMY_KEY || '';
 const SKIP_LOAD = process.env.SKIP_LOAD === 'true';
 const MAINNET_FORK = process.env.MAINNET_FORK === 'true';
@@ -39,15 +34,6 @@ if (!SKIP_LOAD) {
 }
 
 require(`${path.join(__dirname, 'tasks/misc')}/set-dre.ts`);
-
-const mainnetFork = MAINNET_FORK
-  ? {
-      blockNumber: FORKING_BLOCK,
-      url: ALCHEMY_KEY
-        ? `https://rpc-tanenbaum.rollux.com`
-        : `https://rpc-tanenbaum.rollux.com`,
-    }
-  : undefined;
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -72,7 +58,19 @@ const config: HardhatUserConfig = {
     outDir: 'types',
   },
   etherscan: {
-    apiKey: ETHERSCAN_KEY,
+    apiKey: {
+      main: "abc" // Set to an empty string or some placeholder
+    },
+    customChains: [
+      {
+        network: "main",
+        chainId: 57000,
+        urls: {
+          apiURL: "https://rollux.tanenbaum.io/api",
+          browserURL: "https://rollux.tanenbaum.io/"
+        }
+      }
+    ]
   },
   defaultNetwork: 'hardhat',
   mocha: {
@@ -80,16 +78,10 @@ const config: HardhatUserConfig = {
   },
   networks: {
     main: {
-      url: 'https://rpc-tanenbaum.rollux.com',
-      hardfork: HARDFORK,
       chainId: 57000,
-      accounts: MNEMONIC ? {
-        mnemonic: MNEMONIC,
-        path: MNEMONIC_PATH,
-        initialIndex: 0,
-        count: 20,
-      } : [PRIVATE_KEY],
-    },
+      url: "https://rpc-tanenbaum.rollux.com",
+      accounts: [PRIVATE_KEY]
+    }, 
     hardhat: {
       hardfork: 'istanbul',
       blockGasLimit: DEFAULT_BLOCK_GAS_LIMIT,
@@ -102,7 +94,6 @@ const config: HardhatUserConfig = {
         privateKey: secretKey,
         balance,
       })),
-      forking: mainnetFork,
     },
   },
 };
